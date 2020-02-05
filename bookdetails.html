@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <style>
+            .details-card{
+                display: grid;
+                grid-template-columns: 30% 70%;
+                grid-column-gap: 20px;
+                padding: 20px;
+                margin: 150px;
+            }
+
+            #book-cover{
+                height: 200px;
+                width: 200px;
+            }
+
+            p{
+                text-align: justify;
+            }
+
+        </style>
+        <script>
+            let dataArray = [];
+
+            let titleid = location.search.replace('?','').split('&')[0].split('=')[1];
+            console.log(titleid);
+            let url ='http://esapi.justbooks.in/getTitleDetails?titleId='+titleid;
+            $.get(url,function(data){
+                 console.log(data);
+                dataArray = data;
+                displayBookDetails(data.successObject);
+            })
+
+            function displayBookDetails(selectedBook){
+                console.log(selectedBook);
+                
+                    $("#details-container").append(
+                        '<div class="details-card">'+
+                            "<div><img id='book-cover' src='"+selectedBook.image_url+"'alt=''/></div>"+
+                            '<div class="data">'+
+                            "<h2>"+ selectedBook.jb_info.title +"</h2>"+  
+                            "<p>"+selectedBook.description+"</p>"+
+                            "<br><br>"+
+                            "<label> Author Name: "+selectedBook.jb_info.author.name+"</label>"+
+                            "<br>"+"<br>"+
+                            "<label> Category Name: "+selectedBook.jb_info.category.name+"</label>"+
+                            "<br>"+"<br>"+
+                            "<label> Rating: "+selectedBook.rating+ "</label>"+
+                            "<br>"+ "<br>"+
+                            "<label> Number of times Rented: "+selectedBook.jb_info.times_rented+"</label>"+
+                            "<br>"+"<br>"+
+                            "<label> Average Reading Time: "+selectedBook.jb_info.avg_reading_time+"</label>"+
+                            "<br>"+ "</div>"+
+                            "</div>"
+                    );
+            }
+
+    </script>
+    </head>
+
+    <body>
+        <div id="details-container">
+
+        </div>
+    </body>
+</html>

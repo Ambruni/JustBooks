@@ -1,0 +1,44 @@
+
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="./index.css">
+        
+    </head>
+    <body>
+
+        <div id="cards-container">
+
+        </div>
+    </body>
+    <script>
+            let dataArray = [];
+
+            $.get("http://esapi.justbooks.in/getSuggestBookDetails?search=ti&page=1",function(data){
+                 console.log(data);
+                dataArray = data;
+                // console.log(dataArray[0]);
+                displayNameCards(data.successObject);
+            })
+
+            function displayNameCards(books) {
+
+                for (let book of books) {
+
+                    $("#cards-container").append(
+                        '<div class="card" onclick="routeToDetailsPage('+ book.jb_info.titleid +')">' + 
+                        "<div class='title-container'><label class='title'>" + book.jb_info.title + "</label></div>" + 
+                        "<img src='" + book.image_url + "'alt=''/>" + 
+                        "<label id='rating'> Rating: " + book.rating + "</label>"   
+                        + "</div>"
+                    );
+                }
+
+            }
+
+            function routeToDetailsPage(titleId) {
+                window.location.href = 'bookdetails.html?titleId='+titleId;
+            }
+    </script>
+</html>
